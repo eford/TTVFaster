@@ -6,7 +6,7 @@ u{T<:Number}(gamma::T,c1::T,c2::T)= ((3+gamma*gamma)*c1+2*gamma*c2)/(gamma*gamma
 # m=+/-1
 v{T<:Number}(z::T,d1::T,d2::T,m::Integer)= ((m*(1-z*z)+6*z)*d1+(2+z*z)*d2)/(z*(1-z*z)*(z+m)*(z+2*m))
 
-function ttv_succinct!(jmax::Integer,alpha::Number,f1::Array{Float64,2},f2::Array{Float64,2},b::Array{Float64,2},alpha0::Number,b0::Array{Float64,2})
+function ttv_succinct!{T1<:Number,T2<:Number}(jmax::Integer,alpha::T1,f1::Array{T2,2},f2::Array{T2,2},b::Array{T2,2},alpha0::T1,b0::Array{T1,2})
 
 # See simple_solution.pdf 7/16/2015
 

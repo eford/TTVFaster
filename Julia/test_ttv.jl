@@ -14,9 +14,17 @@ function test_ttv(jmax::Integer,n1::Integer,n2::Integer,data::Vector; WriteOutpu
 # Set up planets planar-planet types for the inner and outer planets:
 p1=TTVFaster.Planet_plane_hk(data[1],data[2],data[3],data[4],data[ 5])
 p2=TTVFaster.Planet_plane_hk(data[6],data[7],data[8],data[9],data[10])
-time1 = collect(p1.trans0 + linspace(0,n1-1,n1) * p1.period)
-time2 = collect(p2.trans0 + linspace(0,n2-1,n2) * p2.period)
-alpha0=(p1.period/p2.period)^(2//3)
+time1 = zeros(eltype(data),n1)
+for i in 1:length(time1)
+   time1[i] = p1.trans0 + i * p1.period
+end
+time2 = zeros(eltype(data),n2)
+for i in 1:length(time2)
+   time2[i] = p2.trans0 + i * p2.period
+end
+#time1 = collect(p1.trans0 + collect(linspace(0,n1-1,n1)) * p1.period)
+#time2 = collect(p2.trans0 + collect(linspace(0,n2-1,n2)) * p2.period)
+alpha0=abs(p1.period/p2.period)^(2//3)
 # Initialize the computation of the Laplace coefficients:
 b0=TTVFaster.LaplaceCoefficients.initialize(jmax+1,alpha0)
 # Define arrays to hold the TTVs:
@@ -26,9 +34,12 @@ ttv_el_type = eltype(data) == Float64 ? Float64 : Number
 ttv1=Array(ttv_el_type,n1)
 ttv2=Array(ttv_el_type,n2)
 # Define arrays to hold the TTV coefficients and Laplace coefficients:
-f1=Array(Float64,jmax+2,5)
-f2=Array(Float64,jmax+2,5)
-b=Array(Float64,jmax+2,3)
+#f1=Array(Float64,jmax+2,5)
+#f2=Array(Float64,jmax+2,5)
+#b=Array(Float64,jmax+2,3)
+f1=Array(Number,jmax+2,5)
+f2=Array(Number,jmax+2,5)
+b=Array(Number,jmax+2,3)
 hashsum = 0
 for i in 1:num_evals
    # Call the compute_ttv code which implements equation (33)
